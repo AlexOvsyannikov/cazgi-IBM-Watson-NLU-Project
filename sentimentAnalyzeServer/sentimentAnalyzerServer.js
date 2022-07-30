@@ -16,11 +16,11 @@ const cors_app = require('cors');
 app.use(cors_app());
 
 urlRouter.use((req, res, next) =>{
-    console.log(new Date(), req.ip, req.method, req.route, req.query);
+    console.log(new Date(), req.ip, req.method, req.baseUrl, req.query);
     next();
 })
 textRouter.use((req, res, next) => {
-    console.log(new Date(), req.ip, req.method, req.route, req.query);
+    console.log(new Date(), req.ip, req.method, req.baseUrl, req.query);
     next();
 })
 /*Uncomment the following lines to loan the environment 
@@ -43,7 +43,6 @@ class apiInstance {
 
     async getSentiment(text){
         let response = await axios.postForm(this.host+'/sentiment', {text: text, key: api_key});
-
         return response.data;
     }
 }
@@ -61,22 +60,49 @@ app.get("/",(req,res)=>{
 
 //The endpoint for the webserver ending with /url/emotion
 urlRouter.get("/emotion", async (req, res) => {
-    let apiResponse = await instance.getEmotions(req.query['text']);
-    return res.send(apiResponse);
+    try{
+        let apiResponse = await instance.getEmotions(req.query['text']);
+        return res.send(apiResponse);
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).send('Something went wrong')
+    }
 });
 
 //The endpoint for the webserver ending with /url/sentiment
-urlRouter.get("/sentiment", (req,res) => {
-    return res.send("url sentiment for "+req.query.url);
+urlRouter.get("/sentiment", async (req, res) => {
+    try{
+        let apiResponse = await instance.getSentiment(req.query['text']);
+        return res.send(apiResponse);
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).send('Something went wrong')
+    }
 });
 
 //The endpoint for the webserver ending with /text/emotion
-textRouter.get("/emotion", (req,res) => {
-    return res.send({"happy":"10","sad":"90"});
+textRouter.get("/emotion", async (req, res) => {
+    try{
+        let apiResponse = await instance.getEmotions(req.query['text']);
+        return res.send(apiResponse);
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).send('Something went wrong')
+    }
 });
 
-textRouter.get("/sentiment", (req,res) => {
-    return res.send("text sentiment for "+req.query.text);
+textRouter.get("/sentiment", async (req, res) => {
+    try{
+        let apiResponse = await instance.getSentiment(req.query['text']);
+        return res.send(apiResponse);
+    }
+    catch (err){
+        console.log(err)
+        return res.status(500).send('Something went wrong')
+    }
 });
 
 let server = app.listen(8080, () => {
