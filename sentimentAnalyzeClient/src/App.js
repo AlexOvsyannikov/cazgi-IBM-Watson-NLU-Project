@@ -29,7 +29,7 @@ class App extends React.Component {
     //If the input mode is text make it 4 lines
     if(input_mode === "text"){
       mode = "text"
-      rows = 4
+      rows = 10
     }
       this.setState({innercomp:<textarea rows={rows} cols="50" id="textinput"/>,
       mode: mode,
