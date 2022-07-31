@@ -61,7 +61,7 @@ app.get("/",(req,res)=>{
 //The endpoint for the webserver ending with /url/emotion
 urlRouter.get("/emotion", async (req, res) => {
     try{
-        let apiResponse = await instance.getEmotions(req.query['text']);
+        let apiResponse = await instance.getEmotions(req.query['url']);
         return res.send(apiResponse);
     }
     catch (err){
@@ -73,7 +73,7 @@ urlRouter.get("/emotion", async (req, res) => {
 //The endpoint for the webserver ending with /url/sentiment
 urlRouter.get("/sentiment", async (req, res) => {
     try{
-        let apiResponse = await instance.getSentiment(req.query['text']);
+        let apiResponse = await instance.getSentiment(req.query['url']);
         return res.send(apiResponse);
     }
     catch (err){
