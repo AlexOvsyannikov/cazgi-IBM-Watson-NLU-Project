@@ -105,7 +105,7 @@ textRouter.get("/sentiment", async (req, res) => {
     }
 });
 
-let server = app.listen(8080, () => {
+let server = app.listen(process.env.PORT || 80, () => {
     console.log('Listening', server.address().port)
 })
 
